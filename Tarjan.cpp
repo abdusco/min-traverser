@@ -4,6 +4,20 @@
 
 Tarjan::Tarjan(const NodeList& nodes) : nodes(nodes) {}
 
+void Tarjan::sortTopological() {
+    for (Node* node : nodes) {
+        if (node->visited) continue;
+        startingPoints.push_back(node);
+        NodeList visited;
+        depthFirstSearch(*node, visited);
+        for (Node* visitedNode : visited) {
+            ordering.insert(ordering.begin(), visitedNode);
+        }
+    }
+
+    sorted = true;
+}
+
 void Tarjan::depthFirstSearch(Node& current, NodeList& visited) {
     current.visit();
     for (Node* edge : current.edges) {
@@ -13,33 +27,18 @@ void Tarjan::depthFirstSearch(Node& current, NodeList& visited) {
     visited.push_back(&current);
 }
 
-void Tarjan::run() {
-    for (Node* node : nodes) {
-        if (node->visited) continue;
-        startingPoints.push_back(node);
-
-        NodeList visited;
-        depthFirstSearch(*node, visited);
-        for (Node* visitedNode : visited) {
-            ordering.insert(ordering.begin(), visitedNode);
-        }
-    }
-
-    done = true;
-}
-
 NodeList Tarjan::getTopologicalOrdering() {
-    if (!done) run();
+    if (!sorted) sortTopological();
     return ordering;
 }
 
 NodeList Tarjan::getStartingPoints() {
-    if (!done) run();
+    if (!sorted) sortTopological();
     return startingPoints;
 }
 
 void Tarjan::reset() {
-    done = false;
+    sorted = false;
     startingPoints = NodeList();
     ordering = NodeList();
 

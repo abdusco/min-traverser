@@ -7,15 +7,14 @@ class Tarjan {
     const NodeList& nodes;
     NodeList ordering;
     NodeList startingPoints;
-
-    bool done = false;
+    bool sorted = false;
 
     void depthFirstSearch(Node& current, NodeList& visited);
 
+    void sortTopological();
+
 public:
     Tarjan(const NodeList& nodes);
-
-    void run();
 
     NodeList getTopologicalOrdering();
 
