@@ -3,10 +3,10 @@
 #include <fstream>
 #include <sstream>
 
-#include "InputParser.h"
-#include "Node.h"
-#include "Tarjan.h"
-#include "Report.h"
+#include "models/InputParser.h"
+#include "models/Node.h"
+#include "models/Tarjan.h"
+#include "models/Report.h"
 
 
 int main(int argc, char* argv[]) {
