@@ -9,6 +9,7 @@ set(SOURCE_FILES
         main.cpp
         Node.h Node.cpp
         Tarjan.h Tarjan.cpp
+        InputParser.cpp InputParser.h
         )
 
 add_executable(project3 ${SOURCE_FILES})
