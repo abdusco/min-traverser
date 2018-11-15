@@ -20,6 +20,8 @@ public:
     void visit();
 
     friend std::ostream& operator<<(std::ostream& os, const Node& node);
+
+    void reset();
 };
 
 #endif //PROJECT3_NODE_H

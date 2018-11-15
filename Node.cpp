@@ -14,3 +14,7 @@ std::ostream& operator<<(std::ostream& os, const Node& node) {
        << ")";
     return os;
 }
+
+void Node::reset() {
+    visited = false;
+}

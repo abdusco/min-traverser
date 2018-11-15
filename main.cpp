@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Node.h"
+#include "Tarjan.h"
 
 
 NodeList parseInput(const std::string& filename);
@@ -17,7 +18,24 @@ int main(int argc, char* argv[]) {
     bool verbose = argc > 3;
 
     NodeList nodes = parseInput(argv[1]);
-    std::cout << argv[1] << std::endl;
+
+    Tarjan tarjan(nodes);
+    NodeList ordering = tarjan.getTopologicalOrdering();
+    NodeList necessary = tarjan.getStartingPoints();
+
+    if (verbose) {
+        std::cout << "ORDERING" << std::endl;
+        for (Node* n : ordering) {
+            std::cout << *n << " ";
+        }
+        std::cout << std::endl;
+
+        std::cout << "NECESSARY" << std::endl;
+        for (Node* n : necessary) {
+            std::cout << *n << " ";
+        }
+        std::cout << std::endl;
+    }
 
     return 0;
 }
