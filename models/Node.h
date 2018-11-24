@@ -16,31 +16,17 @@ public:
     bool stacked = false;
     bool visited = false;
 
-    long getIndex() const;
-
-    bool onStack() const;
-
-    void onStack(bool isStacked);
-
-    void setLowLink(long lowLink);
-
     NodeList neighbors;
 
-    long getLowLink() const;
-
-    bool isRoot() const;
-
     explicit Node(long id);
-
-    bool isVisited();
-
-    void setIndex(long index);
 
     friend std::ostream& operator<<(std::ostream& os, const Node& node);
 
     bool operator!=(const Node& rhs) const;
 
     bool operator==(const Node& rhs) const;
+
+    void reset();
 };
 
 #endif //PROJECT3_NODE_H
