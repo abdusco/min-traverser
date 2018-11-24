@@ -2,52 +2,41 @@
 #include <iostream>
 #include "Tarjan.h"
 
-Tarjan::Tarjan(const NodeList& nodes) : nodes(nodes) {}
+Tarjan::Tarjan(const NodeList& nodes) : nodes(nodes) {
+    for (Node* v : nodes) {
+        if (!v->visited) connect(*v);
+    }
+}
 
-void Tarjan::sortTopological() {
-    for (Node* node : nodes) {
-        if (node->visited) continue;
-        // start with this node
-        startingPoints.push_back(node);
+void Tarjan::connect(Node& v) {
+    v.index = v.lowLink = index++;
+    stack.push(&v);
+    v.visited = v.stacked = true;
 
-        // and explore as far as possible
-        NodeList visited;
-        depthFirstSearch(*node, visited);
-
-        // push visited nodes in reverse order
-        for (Node* visitedNode : visited) {
-            ordering.insert(ordering.begin(), visitedNode);
+    for (Node* w : v.neighbors) {
+        if (w->index == -1) {
+            connect(*w);
+            v.lowLink = std::min(v.lowLink, w->lowLink);
+        } else if (w->stacked) {
+            v.lowLink = std::min(v.lowLink, w->index);
         }
     }
 
-    sorted = true;
-}
+    if (v.lowLink == v.index) {
+        NodeList scc;
+        Node* w;
+        do {
+            w = stack.top();
+            stack.pop();
+            w->stacked = false;
+            scc.push_back(w);
+        } while (v != *w);
 
-void Tarjan::depthFirstSearch(Node& current, NodeList& visited) {
-    current.visit();
-    for (Node* edge : current.edges) {
-        if (edge->visited) continue;
-        depthFirstSearch(*edge, visited);
+        if (!scc.empty())
+            sccs.push_back(scc);
     }
-    visited.push_back(&current);
 }
 
-NodeList Tarjan::getTopologicalOrdering() {
-    if (!sorted) sortTopological();
-    return ordering;
-}
-
-NodeList Tarjan::getStartingPoints() {
-    if (!sorted) sortTopological();
-    return startingPoints;
-}
-
-void Tarjan::reset() {
-    sorted = false;
-    startingPoints = NodeList();
-    ordering = NodeList();
-
-    for (Node* node : nodes) {
-        node->reset();
-    }
+const std::vector<NodeList>& Tarjan::getSCCs() const {
+    return sccs;
 }

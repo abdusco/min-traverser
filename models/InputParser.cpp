@@ -31,7 +31,7 @@ NodeList InputParser::parse() {
         while (numNeighbors--) {
             nodeProps >> neighborId;
             auto neighbor = nodes.at(neighborId - 1);
-            curr->edges.emplace_back(neighbor);
+            curr->neighbors.emplace_back(neighbor);
         }
     }
     return nodes;

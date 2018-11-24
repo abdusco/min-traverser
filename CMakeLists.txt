@@ -10,7 +10,6 @@ set(SOURCE_FILES
         models/Node.h models/Node.cpp
         models/Tarjan.h models/Tarjan.cpp
         models/InputParser.cpp models/InputParser.h
-        models/Report.h
         )
 
 add_executable(project3 ${SOURCE_FILES})

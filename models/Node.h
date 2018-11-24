@@ -9,19 +9,38 @@ class Node;
 typedef std::vector<Node*> NodeList;
 
 class Node {
-
 public:
-    NodeList edges;
+    long index = -1;
+    long lowLink = -1;
+    long id;
+    bool stacked = false;
     bool visited = false;
-    unsigned int id;
 
-    Node(unsigned int id);
+    long getIndex() const;
 
-    void visit();
+    bool onStack() const;
+
+    void onStack(bool isStacked);
+
+    void setLowLink(long lowLink);
+
+    NodeList neighbors;
+
+    long getLowLink() const;
+
+    bool isRoot() const;
+
+    explicit Node(long id);
+
+    bool isVisited();
+
+    void setIndex(long index);
 
     friend std::ostream& operator<<(std::ostream& os, const Node& node);
 
-    void reset();
+    bool operator!=(const Node& rhs) const;
+
+    bool operator==(const Node& rhs) const;
 };
 
 #endif //PROJECT3_NODE_H

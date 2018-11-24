@@ -1,26 +1,24 @@
 #ifndef PROJECT3_TARJAN_H
 #define PROJECT3_TARJAN_H
 
+#include <stack>
+
 #include "Node.h"
 
 class Tarjan {
     const NodeList& nodes;
-    NodeList ordering;
-    NodeList startingPoints;
-    bool sorted = false;
 
-    void depthFirstSearch(Node& current, NodeList& visited);
+    long index = 0;
+    std::vector<NodeList> sccs;
+    std::stack<Node*> stack;
 
-    void sortTopological();
+    void connect(Node& v);
 
 public:
-    Tarjan(const NodeList& nodes);
+    const std::vector<NodeList>& getSCCs() const;
 
-    NodeList getTopologicalOrdering();
+    explicit Tarjan(const NodeList& nodes);
 
-    NodeList getStartingPoints();
-
-    void reset();
 };
 
 

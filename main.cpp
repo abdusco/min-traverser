@@ -6,7 +6,6 @@
 #include "models/InputParser.h"
 #include "models/Node.h"
 #include "models/Tarjan.h"
-#include "models/Report.h"
 
 
 int main(int argc, char* argv[]) {
@@ -21,22 +20,11 @@ int main(int argc, char* argv[]) {
     NodeList adjList = InputParser(input).parse();
 
     Tarjan tarjan(adjList);
-    NodeList ordering = tarjan.getTopologicalOrdering();
-    NodeList necessary = tarjan.getStartingPoints();
 
-    std::ofstream outfile(argv[2], std::ios::app);
-    outfile << Report(necessary) << std::endl;
-
-    if (verbose) {
-        std::cout << "ORDERING" << std::endl;
-        for (Node* n : ordering) {
-            std::cout << *n << " ";
-        }
-        std::cout << std::endl;
-
-        std::cout << "NECESSARY" << std::endl;
-        for (Node* n : necessary) {
-            std::cout << *n << " ";
+    for (const NodeList& component : tarjan.getSCCs()) {
+        std::cout << "SCC:\t";
+        for (Node* item : component) {
+            std::cout << *item << " ";
         }
         std::cout << std::endl;
     }
