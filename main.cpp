@@ -1,56 +1,36 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include <sstream>
 
-#include "Node.h"
+#include "models/InputParser.h"
+#include "models/TraverseMinimizer.h"
 
-
-NodeList parseInput(const std::string& filename);
+void report(std::basic_ostream<char>& stream, NodeList& points);
 
 int main(int argc, char* argv[]) {
+    bool verbose = argc > 3;
     if (argc < 3) {
         std::cout << "Syntax: ./project3 <input_file> <output_file> [verbose]" << std::endl;
         std::cout << "(add any character to the end to output results to the console)" << std::endl;
         return 1;
     }
-    bool verbose = argc > 3;
 
-    NodeList nodes = parseInput(argv[1]);
-    std::cout << argv[1] << std::endl;
+    std::ifstream input(argv[1]);
+    NodeList adjList = InputParser(input).parse();
+    TraverseMinimizer sb(adjList);
 
-    return 0;
+    if (verbose) {
+        report(std::cout, sb.startingPoints);
+    }
+
+    std::ofstream outfile(argv[2]);
+    report(outfile, sb.startingPoints);
 }
 
-NodeList parseInput(const std::string& filename) {
-    std::ifstream infile(filename);
-
-    std::string line;
-    getline(infile, line);
-    std::istringstream lss(line);
-
-    unsigned int numNodes;
-    lss >> numNodes;
-
-    NodeList nodes;
-    for (unsigned int i = 1; i <= numNodes; ++i) {
-        nodes.emplace_back(new Node(i));
+void report(std::basic_ostream<char>& stream, NodeList& points) {
+    stream << points.size() << " ";
+    for (Node* n : points) {
+        stream << n->id << " ";
     }
-
-    for (unsigned int i = 0;
-         std::getline(infile, line) && i < numNodes;
-         ++i) {
-        Node* curr = nodes.at(i);
-        std::istringstream ss(line);
-
-        unsigned int numNeighbors, neighborId;
-        ss >> numNeighbors;
-
-        while (numNeighbors--) {
-            ss >> neighborId;
-            Node* neighbor = nodes.at(neighborId - 1);
-            curr->edges.emplace_back(neighbor);
-        }
-    }
-    return nodes;
+    stream << std::endl;
 }

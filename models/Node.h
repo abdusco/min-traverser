@@ -9,17 +9,20 @@ class Node;
 typedef std::vector<Node*> NodeList;
 
 class Node {
-
 public:
-    NodeList edges;
+    unsigned long id;
+    bool marked = false;
     bool visited = false;
-    unsigned int id;
 
-    Node(unsigned int id);
+    NodeList neighbors;
 
-    void visit();
+    explicit Node(unsigned long id);
 
     friend std::ostream& operator<<(std::ostream& os, const Node& node);
+
+    bool operator!=(const Node& rhs) const;
+
+    bool operator==(const Node& rhs) const;
 };
 
 #endif //PROJECT3_NODE_H
