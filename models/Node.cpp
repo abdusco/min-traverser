@@ -15,17 +15,3 @@ bool Node::operator==(const Node& rhs) const {
 bool Node::operator!=(const Node& rhs) const {
     return !(*this == rhs);
 }
-
-bool Node::isMarked() {
-    return marked && !markDeleted;
-}
-
-void Node::mark() {
-    marked = true;
-    markDeleted = false;
-}
-
-void Node::deleteMark() {
-    markDeleted = true;
-    marked = false;
-}

@@ -2,58 +2,45 @@
 #include "TraverseMinimizer.h"
 
 TraverseMinimizer::TraverseMinimizer(const NodeList& nodes) : nodes(nodes) {
-    for (Node* node : nodes) {
+    for (auto node : nodes) {
         if (node->visited) continue;
 
-        node->mark();
+        node->marked = true;
         markedNodes.push_back(node);
-        dfsStack(node);
-    }
-}
-
-void TraverseMinimizer::dfs(Node* v) {
-    if (v->visited) return;
-    v->visited = true;
-
-    for (Node* neighbor : v->neighbors) {
-        if (neighbor->isMarked()) {
-            removeMark(neighbor);
-            continue;
-        }
-
-        if (neighbor->visited) continue;
-        dfs(neighbor);
+        dfs(*node);
     }
 }
 
 
-void TraverseMinimizer::dfsStack(Node* node) {
-    std::stack<Node*> recursion;
-    recursion.push(node);
+void TraverseMinimizer::dfs(Node& node) {
+    auto pile = new std::stack<Node*>;
+    pile->push(&node);
 
-    while (!recursion.empty()) {
-        auto v = recursion.top();
-        recursion.pop();
+    while (!pile->empty()) {
+        auto v = pile->top();
+        pile->pop();
 
         if (v->visited) continue;
         v->visited = true;
 
-        for (Node* neighbor : v->neighbors) {
-            if (neighbor->isMarked()) {
-                removeMark(neighbor);
+        for (auto neighbor : v->neighbors) {
+            if (neighbor->marked) {
+                removeMark(*neighbor);
                 continue;
             }
             if (neighbor->visited) continue;
-            recursion.push(neighbor);
+            pile->push(neighbor);
         }
     }
+    delete pile;
 }
 
 
-void TraverseMinimizer::removeMark(Node* marked) {
-    for (auto& markedNode : markedNodes) {
-        if (markedNode != marked) continue;
-        marked->deleteMark();
+void TraverseMinimizer::removeMark(Node& marked) {
+    for (auto it = markedNodes.begin(); it != markedNodes.end(); it++) {
+        if (*it != &marked) continue;
+        marked.marked = false;
+        markedNodes.erase(it);
         return;
     }
 }

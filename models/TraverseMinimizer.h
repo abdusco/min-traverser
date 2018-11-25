@@ -13,11 +13,10 @@ public:
 
 private:
     const NodeList& nodes;
-    void dfsStack(Node* node);
 
-    void dfs(Node* node);
+    void dfs(Node& node);
 
-    void removeMark(Node* marked);
+    void removeMark(Node& marked);
 };
 
 

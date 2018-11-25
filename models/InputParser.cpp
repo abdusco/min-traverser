@@ -9,23 +9,23 @@ NodeList InputParser::parse() {
     std::istringstream listProps(line);
 
     // read # of nodes
-    unsigned int numNodes;
+    unsigned long numNodes;
     listProps >> numNodes;
 
     // create nodes
     NodeList nodes;
-    for (unsigned int i = 1; i <= numNodes; ++i) {
+    for (unsigned long i = 1; i <= numNodes; ++i) {
         nodes.emplace_back(new Node(i));
     }
 
     // build adjacency list
-    for (unsigned int i = 0;
+    for (unsigned long i = 0;
          std::getline(input, line) && i < numNodes;
          ++i) {
         auto curr = nodes.at(i);
         std::istringstream nodeProps(line);
 
-        unsigned int numNeighbors, neighborId;
+        unsigned long numNeighbors, neighborId;
         nodeProps >> numNeighbors;
 
         while (numNeighbors--) {

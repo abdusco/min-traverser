@@ -21,26 +21,16 @@ int main(int argc, char* argv[]) {
     TraverseMinimizer sb(adjList);
 
     if (verbose) {
-        int realSize = 0;
+        std::cout << sb.markedNodes.size() << " ";
         for (Node* n : sb.markedNodes) {
-            if (n->isMarked()) realSize++;
-        }
-        std::cout << realSize << " ";
-        for (Node* n : sb.markedNodes) {
-            if (!n->isMarked()) continue;
             std::cout << n->id << " ";
         }
         std::cout << std::endl;
     }
 
     std::ofstream outfile(argv[2]);
-    int realSize = 0;
+    outfile << sb.markedNodes.size() << " ";
     for (Node* n : sb.markedNodes) {
-        if (n->isMarked()) realSize++;
-    }
-    outfile << realSize << " ";
-    for (Node* n : sb.markedNodes) {
-        if (!n->isMarked()) continue;
         outfile << n->id << " ";
     }
     outfile << std::endl;
