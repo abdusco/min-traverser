@@ -1,4 +1,9 @@
 .idea
 cmake-build-debug
 input*.txt
-out*.txt
+o*.txt
+project3
+sample_input.txt
+Makefile
+CMakeCache.txt
+cmake_install.cmake

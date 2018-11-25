@@ -4,13 +4,7 @@
 Node::Node(long id) : id(id) {}
 
 std::ostream& operator<<(std::ostream& os, const Node& node) {
-    os << "N("
-       << node.id
-       //       << ":"
-       //       << node.index
-       //       << ","
-       //       << node.lowLink
-       << ")";
+    os << node.id;
     return os;
 }
 
@@ -22,10 +16,16 @@ bool Node::operator!=(const Node& rhs) const {
     return !(*this == rhs);
 }
 
-void Node::reset() {
-    index = -1;
-    lowLink = -1;
-    stacked = false;
-    visited = false;
+bool Node::isMarked() {
+    return marked && !markDeleted;
 }
 
+void Node::mark() {
+    marked = true;
+    markDeleted = false;
+}
+
+void Node::deleteMark() {
+    markDeleted = true;
+    marked = false;
+}

@@ -5,7 +5,7 @@
 
 #include "models/InputParser.h"
 #include "models/Node.h"
-#include "models/Tarjan.h"
+#include "models/TraverseMinimizer.h"
 
 
 int main(int argc, char* argv[]) {
@@ -18,16 +18,30 @@ int main(int argc, char* argv[]) {
 
     std::ifstream input(argv[1]);
     NodeList adjList = InputParser(input).parse();
+    TraverseMinimizer sb(adjList);
 
-    Tarjan tarjan(adjList);
-
-    for (const NodeList& component : tarjan.getSCCs()) {
-        std::cout << "SCC:\t";
-        for (Node* item : component) {
-            std::cout << *item << " ";
+    if (verbose) {
+        int realSize = 0;
+        for (Node* n : sb.markedNodes) {
+            if (n->isMarked()) realSize++;
+        }
+        std::cout << realSize << " ";
+        for (Node* n : sb.markedNodes) {
+            if (!n->isMarked()) continue;
+            std::cout << n->id << " ";
         }
         std::cout << std::endl;
     }
 
-    return 0;
+    std::ofstream outfile(argv[2]);
+    int realSize = 0;
+    for (Node* n : sb.markedNodes) {
+        if (n->isMarked()) realSize++;
+    }
+    outfile << realSize << " ";
+    for (Node* n : sb.markedNodes) {
+        if (!n->isMarked()) continue;
+        outfile << n->id << " ";
+    }
+    outfile << std::endl;
 }

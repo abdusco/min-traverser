@@ -9,11 +9,11 @@ class Node;
 typedef std::vector<Node*> NodeList;
 
 class Node {
+private:
+    bool marked = false;
+    bool markDeleted = false;
 public:
-    long index = -1;
-    long lowLink = -1;
     long id;
-    bool stacked = false;
     bool visited = false;
 
     NodeList neighbors;
@@ -26,7 +26,10 @@ public:
 
     bool operator==(const Node& rhs) const;
 
-    void reset();
+    bool isMarked();
+    void mark();
+    void deleteMark();
+
 };
 
 #endif //PROJECT3_NODE_H
