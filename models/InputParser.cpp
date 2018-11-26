@@ -3,7 +3,7 @@
 
 InputParser::InputParser(std::ifstream& input) : input(input) {}
 
-NodeList InputParser::parse() {
+NodeList& InputParser::parse() {
     std::string line;
     getline(input, line);
     std::istringstream listProps(line);
@@ -13,16 +13,16 @@ NodeList InputParser::parse() {
     listProps >> numNodes;
 
     // create nodes
-    NodeList nodes;
+    auto nodes = new NodeList;
     for (unsigned long i = 1; i <= numNodes; ++i) {
-        nodes.emplace_back(new Node(i));
+        nodes->emplace_back(new Node(i));
     }
 
     // build adjacency list
     for (unsigned long i = 0;
          std::getline(input, line) && i < numNodes;
          ++i) {
-        auto curr = nodes.at(i);
+        auto curr = nodes->at(i);
         std::istringstream nodeProps(line);
 
         unsigned long numNeighbors, neighborId;
@@ -30,9 +30,9 @@ NodeList InputParser::parse() {
 
         while (numNeighbors--) {
             nodeProps >> neighborId;
-            auto neighbor = nodes.at(neighborId - 1);
+            auto neighbor = nodes->at(neighborId - 1);
             curr->neighbors.emplace_back(neighbor);
         }
     }
-    return nodes;
+    return *nodes;
 }

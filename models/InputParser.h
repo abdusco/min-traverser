@@ -10,7 +10,7 @@ class InputParser {
 public:
     explicit InputParser(std::ifstream& input);
 
-    NodeList parse();
+    NodeList& parse();
 };
 
 
